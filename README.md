@@ -1,16 +1,72 @@
-# React + Vite
+# 🎮 Multiplayer Tic-Tac-Toe (WebSocket + React)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A real-time multiplayer Tic-Tac-Toe game built with **React**, **Tailwind CSS**, and **WebSockets**.
+Players from different places can connect, get matched automatically, and play Tic-Tac-Toe live — no database required.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+* 🔗 Real-time gameplay using WebSocket connections
+* 👥 Automatic player matching (no signup required)
+* ❌⭕ Assigns players as X and O dynamically
+* 🕹️ Validates moves and checks for wins/draws on the server
+* 🎨 Modern UI with React + Tailwind CSS
+* ⚡ Lightweight, no database – all data stored in memory during play
+* 🔌 Handles disconnections gracefully
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📝 How It Works
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. **Connect** – Players open the game page and connect to the WebSocket server.
+
+2. **Matchmaking** – The server waits for two players.
+
+   * If you’re first, you’ll see “Waiting for another player…”
+   * When a second player joins, both are paired into a room.
+
+3. **Assign Roles** – The server automatically gives one player **X** and the other **O**.
+
+   * Both see the same empty board.
+
+4. **Play the Game** – Players click on cells to make moves.
+
+   * Moves go to the server.
+   * The server updates the board, checks turn, and sends the updated board back to both players in real time.
+
+5. **Game Over** – When someone wins or it’s a draw, the server sends the result to both players and ends the room.
+
+6. **Disconnects** – If a player leaves during a match, the other player is notified immediately.
+
+---
+
+## 🛠️ Tech Stack
+
+* **Frontend:** react, tailwind-css, react-router-dom, WebSocket client
+* **Backend:** Node.js with `ws` WebSocket server
+
+---
+
+## 🏃‍♂️ Running Locally
+
+1. Clone the repo
+
+   ```bash
+   git clone https://github.com/yourusername/tic-tac-toe-websocket.git
+   cd tic-tac-toe-websocket
+   ```
+
+2. Install dependencies
+
+   ```bash
+   npm install
+   ```
+
+3. Run the WebSocket server
+
+   ```bash
+   node server.js
+   ```
+
+4. Open `public/index.html` in two different browsers or devices to test multiplayer.
