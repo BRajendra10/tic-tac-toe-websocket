@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
 function Game() {
@@ -12,8 +12,7 @@ function Game() {
   const [status, setStatus] = useState("");
   const [socket, setSocket] = useState("");
   const [result, setResult] = useState("");
-
-  console.log(mySymbol);
+  const clientIdRef = useRef("");
 
   useEffect(() => {
     const ws = new WebSocket('ws://localhost:8080');
@@ -33,12 +32,13 @@ function Game() {
 
       switch (msg.type) {
         case 'connected':
+          clientIdRef.current = msg.clientId;
           console.log('Client connected:', msg.clientId);
           break;
 
         case 'created':
           setRmId(msg.roomId);
-          setMySymbol(msg.symbol);
+          setMySymbol(msg.state.players[clientIdRef.current]);
           setBoard(msg.state.board);
           setTurn(msg.state.turn);
           setStatus('Waiting for opponent to join...');
@@ -46,6 +46,7 @@ function Game() {
 
         case 'joined':
           setRmId(msg.roomId);
+          setMySymbol(msg.state.players[clientIdRef.current]);
           setBoard(msg.state.board);
           setTurn(msg.state.turn);
           setStatus('Game started!');
@@ -59,8 +60,13 @@ function Game() {
           break;
 
         case 'left':
-          alert("Opponent left. Returning to homepage.");
+          alert("Returning to homepage.");
           navigate("/"); // no need to reset state
+          break;
+
+        case 'error':
+          alert(`${msg.message}. Returning to homepage.`);
+          navigate("/");
           break;
       }
     }
@@ -76,6 +82,7 @@ function Game() {
 
   // Handle a cell click
   const handleClick = (index) => {
+    console.log(turn, mySymbol);
     if (turn !== mySymbol) {
       console.log("Not your turn");
       return

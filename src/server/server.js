@@ -4,7 +4,15 @@ import { v4 as uuidv4 } from "uuid";
 const wss = new WebSocketServer({ port: 8080 });
 console.log("WebSocket server listening on ws://localhost:8080");
 
-const rooms = new Map(); // roomId => { players: Map(clientId -> ws), state }
+const rooms = new Map();
+// rooms (Map)
+//  ├─ 'ROOM123' → { 
+//  │    players: Map
+//  │     ├─ 'clientA' → wsA
+//  │     └─ 'clientB' → wsB
+//  │    state: { board: [...], turn: 'X', ... }
+//  │  }
+//  └─ 'ROOM456' → { ...another room... }
 
 function createEmptyState() {
   return {
@@ -44,8 +52,8 @@ function broadcastRoom(roomId, payload) {
 // Handle connections
 wss.on('connection', (ws) => {
   const clientId = uuidv4();
-  ws.clientId = clientId;
-  ws.roomId = null;
+  ws.clientId = clientId; // Assign a unique ID to this client and store it on the socket.
+  ws.roomId = null; // Also track which room this client is in (null until they join/create a room).
 
   ws.send(JSON.stringify({ type: 'connected', clientId }));
 
@@ -62,7 +70,7 @@ wss.on('connection', (ws) => {
           rooms.set(roomId, { players, state });
           ws.roomId = roomId;
           ws.symbol = 'X';
-          ws.send(JSON.stringify({ type: 'created', roomId, symbol: 'X', state }));
+          ws.send(JSON.stringify({ type: 'created', roomId, state }));
           break;
         }
 
