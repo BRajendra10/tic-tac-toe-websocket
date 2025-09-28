@@ -99,17 +99,21 @@ wss.on('connection', (ws) => {
           const { index } = msg;
           const room = rooms.get(ws.roomId);
           const state = room.state;
-          if (state.result) return; // already finished
           const mySymbol = state.players[clientId];
-          if (state.turn !== mySymbol) return;
-          if (index < 0 || index > 8 || state.board[index]) return;
-
+          // Early exit if invalid move
+          if (
+            state.result ||             // game already finished
+            state.turn !== mySymbol ||  // not your turn
+            index < 0 || index > 8 ||  // invalid index
+            state.board[index]          // cell already filled
+          ) return;
+          // Make the move
           state.board[index] = mySymbol;
           state.turn = mySymbol === 'X' ? 'O' : 'X';
-
+          // Check for winner
           const result = checkWinner(state.board);
           if (result) state.result = result;
-
+          // Broadcast updated state
           broadcastRoom(ws.roomId, { type: 'state', state });
           break;
         }
@@ -117,16 +121,13 @@ wss.on('connection', (ws) => {
         case 'reset': {
           const room = rooms.get(ws.roomId);
           if (!room) return;
-          // Save old symbols before resetting
-          const oldPlayers = { ...room.state.players };
           // Reset state
           room.state = createEmptyState();
-          // Get players
-          const players = Array.from(room.players.keys()); // [p1, p2]
+          // Get players array [p1, p2]
+          const [p1, p2] = Array.from(room.players.keys());
           // Swap symbols
-          room.state.players[players[0]] = oldPlayers[players[1]] || 'X';
-          room.state.players[players[1]] = oldPlayers[players[0]] || 'O';
-          // Broadcast new state
+          [room.state.players[p1], room.state.players[p2]] = ['O', 'X'];
+          // Broadcast
           broadcastRoom(ws.roomId, { type: 'state', state: room.state });
           break;
         }
