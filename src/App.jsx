@@ -1,10 +1,10 @@
 import React from 'react'
-import Home from './components/Home'
+import Navigation from './routes/Navigation'
 
 function App() {
   return (
-    <div>
-      <Home />
+    <div className="w-full h-screen flex justify-center items-center bg-blue-500">
+      <Navigation />
     </div>
   )
 }
