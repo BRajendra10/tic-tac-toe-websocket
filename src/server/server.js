@@ -1,8 +1,11 @@
 import { WebSocketServer } from "ws";
 import { v4 as uuidv4 } from "uuid";
+import http from 'http';  // Node built-in—no install needed
 
-const wss = new WebSocketServer({ port: 8080 });
-console.log("WebSocket server listening on ws://localhost:8080");
+const PORT = process.env.PORT || 8080;
+const server = http.createServer();  // Empty HTTP—just for hosting
+const wss = new WebSocketServer({ server });  // WS on same port
+console.log(`WebSocket server listening on ws://localhost:${PORT}`);
 
 const rooms = new Map();
 // rooms (Map)
@@ -165,3 +168,5 @@ wss.on('connection', (ws) => {
   });
 
 });
+
+server.listen(PORT);  // Binds everything
