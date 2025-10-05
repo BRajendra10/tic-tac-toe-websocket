@@ -53,6 +53,7 @@ function Game() {
         case 'state':
           setResult(msg.state.result);
           setBoard(msg.state.board);
+          setMySymbol(msg.state.turn);
           setTurn(msg.state.turn);
           break;
 
@@ -97,7 +98,7 @@ function Game() {
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0F0C29] via-[#302B63] to-[#24243E] p-4 sm:p-6">
-      <h1 className="text-4xl sm:text-5xl font-bold mb-6 sm:mb-8 drop-shadow-lg text-center">Tic Tac Toe</h1>
+      <h1 className="text-4xl sm:text-5xl font-bold mb-6 sm:mb-8 drop-shadow-lg text-center text-white">Tic Tac Toe</h1>
 
       <div className="flex flex-col md:flex-col lg:flex-row items-center gap-8 w-full max-w-4xl">
         {/* Game Board */}
