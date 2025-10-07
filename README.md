@@ -1,72 +1,100 @@
-# 🎮 Multiplayer Tic-Tac-Toe (WebSocket + React)
+# 🎮 Multiplayer Tic-Tac-Toe (React + WebSocket)
 
-A real-time multiplayer Tic-Tac-Toe game built with **React**, **Tailwind CSS**, and **WebSockets**.
-Players from different places can connect, get matched automatically, and play Tic-Tac-Toe live — no database required.
+A **real-time multiplayer Tic-Tac-Toe** game built with **React**, **Tailwind CSS**, and **WebSocket** — no database or backend frameworks required.
+Players can connect from anywhere, get auto-matched, and play instantly in real-time.
 
 ---
 
 ## 🚀 Features
 
-* 🔗 Real-time gameplay using WebSocket connections
-* 👥 Automatic player matching (no signup required)
-* ❌⭕ Assigns players as X and O dynamically
-* 🕹️ Validates moves and checks for wins/draws on the server
-* 🎨 Modern UI with React + Tailwind CSS
-* ⚡ Lightweight, no database – all data stored in memory during play
-* 🔌 Handles disconnections gracefully
+* 🔗 **Real-Time Gameplay** – Moves sync instantly using WebSocket
+* 👥 **Auto Player Matching** – No signup or login needed
+* ❌⭕ **Dynamic Player Assignment** – Auto assigns X and O
+* 🕹️ **Game Logic on Server** – Server validates moves & checks results
+* 🎨 **Modern UI** – Clean Tailwind CSS interface
+* ⚡ **Lightweight & Fast** – No database; uses in-memory state
+* 🔌 **Graceful Handling** – Detects and responds to player disconnections
 
 ---
 
-## 📝 How It Works
+## 🧭 Learnings
 
-1. **Connect** – Players open the game page and connect to the WebSocket server.
+* Understanding how **WebSocket maintains a live, two-way connection**
+* Handling **real-time state synchronization** between players
+* Managing **connection events** like join, move, reset, and leave
+* Seeing how **WebSocket differs from HTTP** in persistent communication
 
-2. **Matchmaking** – The server waits for two players.
 
-   * If you’re first, you’ll see “Waiting for another player…”
-   * When a second player joins, both are paired into a room.
+---
 
-3. **Assign Roles** – The server automatically gives one player **X** and the other **O**.
+## 🧠 How It Works
 
-   * Both see the same empty board.
+1. **Connect**
+   Each player opens the game and connects to the WebSocket server.
 
-4. **Play the Game** – Players click on cells to make moves.
+2. **Matchmaking**
 
-   * Moves go to the server.
-   * The server updates the board, checks turn, and sends the updated board back to both players in real time.
+   * If only one player is online → shows *“Waiting for another player…”*
+   * When a second player joins → both are paired into a private room.
 
-5. **Game Over** – When someone wins or it’s a draw, the server sends the result to both players and ends the room.
+3. **Assign Roles**
 
-6. **Disconnects** – If a player leaves during a match, the other player is notified immediately.
+   * One player becomes **X**, the other **O**.
+   * The same board is displayed to both clients.
+
+4. **Gameplay**
+
+   * Players take turns making moves.
+   * Each move is sent to the server → validated → broadcast to both players.
+   * The board updates in real-time.
+
+5. **Game End**
+
+   * When someone wins or it’s a draw → both are notified instantly.
+   * Option to restart the game.
+
+6. **Disconnect Handling**
+
+   * If a player leaves mid-game → the opponent gets notified immediately.
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** react, tailwind-css, react-router-dom, WebSocket client
-* **Backend:** Node.js with `ws` WebSocket server
+| Layer        | Technology                                              |
+| ------------ | ------------------------------------------------------- |
+| **Frontend** | React, Tailwind CSS, React Router DOM, WebSocket client |
+| **Backend**  | `ws` WebSocket server                                   |
+| **Hosting**  | Netlify (Frontend), Local/Cloud (WebSocket Server)      |
 
 ---
 
-## 🏃‍♂️ Running Locally
+## 🏃‍♂️ Run Locally
 
-1. Clone the repo
+1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/tic-tac-toe-websocket.git
-   cd tic-tac-toe-websocket
+   git clone https://github.com/BRajendra10/socketxo.git
+   cd socketxo
    ```
 
-2. Install dependencies
+2. **Install dependencies**
 
    ```bash
    npm install
    ```
 
-3. Run the WebSocket server
+3. **Run the WebSocket server**
 
    ```bash
    node server.js
    ```
 
-4. Open `public/index.html` in two different browsers or devices to test multiplayer.
+4. **Start the client**
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open the app in **two different devices or ask frend** and play!
+
