@@ -5,6 +5,7 @@ function Game() {
   const location = useLocation();
   const navigate = useNavigate();
   const { isCreator, roomId } = location.state;
+  
   const [board, setBoard] = useState(Array(9).fill(null));
   const [turn, setTurn] = useState('X');
   const [rmId, setRmId] = useState("");

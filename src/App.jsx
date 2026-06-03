@@ -1,11 +1,13 @@
-import React from 'react'
-import Navigation from './routes/Navigation'
+import { Routes, Route } from "react-router";
+import Home from './pages/Home.jsx';
+import Game from './pages/Game.jsx';
 
 function App() {
   return (
-    <div className="w-full h-screen flex justify-center items-center bg-blue-500">
-      <Navigation />
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/game" element={<Game />} />
+    </Routes>
   )
 }
 
